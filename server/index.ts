@@ -19,9 +19,12 @@ app.get("/", (req: express.Request, res: express.Response) => {
 io.on("connection", (socket: socketio.Socket) => {
 	console.log("client connected");
 
+	socket.broadcast.emit("hi");
+
 	//첫번째 인자값이 클라이언트랑 동일해야 요청 받을 수 있음!
 	socket.on("chat message", (msg: string) => {
 		console.log("server receive this : ", msg);
+		io.emit("chat message", msg);
 	});
 
 	// socket.on("disconnect", () => {
