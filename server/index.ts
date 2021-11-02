@@ -11,21 +11,26 @@ const server = http.createServer(app);
 const io = new socketio.Server(server);
 
 app.get("/", (req: express.Request, res: express.Response) => {
-	res.sendFile(path.join(__dirname, "..", "server-storage", "sample.html"));
+	res.sendFile(
+		path.join(__dirname, "..", "..", "server-storage", "sample.html")
+	);
 });
 
-io.on("connection", (socket) => {
+io.on("connection", (socket: socketio.Socket) => {
 	console.log("client connected");
 
-	socket.on("message", (obj: object) => {
-		console.log("server receive this : ", obj);
+	//첫번째 인자값이 클라이언트랑 동일해야 요청 받을 수 있음!
+	socket.on("chat message", (msg: string) => {
+		console.log("server receive this : ", msg);
 	});
 
-	socket.on("disconnect", () => {
-		console.log("server disconnected");
-	});
+	// socket.on("disconnect", () => {
+	// 	console.log("client disconnected");
+	// });
 });
 
-server.listen(4232, () => {
+server.listen(
+	4232 /*, () => {
 	console.log("hey, I did it! : 4232");
-});
+}*/
+);
